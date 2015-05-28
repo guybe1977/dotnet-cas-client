@@ -43,6 +43,10 @@ namespace DotNetCasClient.Validation.TicketValidator
         #region Fields
         protected static readonly Logger protoLogger = new Logger(Category.Protocol);
         private NameValueCollection _CustomParameters;
+        
+        private bool initialized;
+        private readonly object lockObject = new object();
+
         #endregion
 
         #region Properties
@@ -93,10 +97,11 @@ namespace DotNetCasClient.Validation.TicketValidator
         #endregion
 
         #region Abstract Methods
+        
         /// <summary>
         /// Perform any initialization required for the UrlTicketValidator implementation.
         /// </summary>
-        public abstract void Initialize();
+        protected abstract void InitializeInternal();
 
         /// <summary>
         /// Parses the response from the server into a CAS Assertion and includes
@@ -114,9 +119,26 @@ namespace DotNetCasClient.Validation.TicketValidator
         /// Thrown if creation of the Assertion fails.
         /// </exception>
         protected abstract ICasPrincipal ParseResponseFromServer(string response, string ticket);
+        
         #endregion
 
         #region Concrete Methods
+
+        public void Initialize()
+        {
+            if (!initialized)
+            {
+                lock (lockObject)
+                {
+                    if (!initialized)
+                    {
+                        InitializeInternal();
+                        initialized = true;
+                    }
+                }
+            }
+        }
+
         /// <summary>
         /// Default implementation that performs an HTTP GET request to the validation URL
         /// supplied with the supplied ticket and returns the response body as a string.
@@ -142,6 +164,8 @@ namespace DotNetCasClient.Validation.TicketValidator
         /// </exception>
         public ICasPrincipal Validate(string ticket)
         {
+            Initialize();
+
             string validationUrl = UrlUtil.ConstructValidateUrl(ticket, CasAuthentication.Gateway, CasAuthentication.Renew, CustomParameters);
             protoLogger.Debug("Constructed validation URL " + validationUrl);
 

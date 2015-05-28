@@ -27,9 +27,10 @@ namespace DotNetCasClient.Configuration
     /// </summary>
     /// <author>Scott Holodak</author>
     /// <author>Marvin S. Addison</author>
-    public class CasClientConfiguration : ConfigurationSection
+    public class CasClientConfiguration : ConfigurationSection, ICloneable
     {
         #region Fields
+
         // Required Properties
         public const string CAS_SERVER_LOGIN_URL = "casServerLoginUrl";
         public const string CAS_SERVER_URL_PREFIX = "casServerUrlPrefix";
@@ -49,11 +50,11 @@ namespace DotNetCasClient.Configuration
         public const string REQUIRE_CAS_FOR_MISSING_CONTENT_TYPES_PARAMETER_NAME = "requireCasForMissingContentTypes";
         public const string REQUIRE_CAS_FOR_CONTENT_TYPES_PARAMETER_NAME = "requireCasForContentTypes";
         public const string BYPASS_CAS_FOR_HANDLERS_PARAMETER_NAME = "bypassCasForHandlers";
-        
+
         // NETC-20 - Not sure whether these attributes are relevant.
         // public const string ARTIFACT_PARAMETER_NAME_VALIDATION = "artifactParameterNameValidation";
         // public const string SERVICE_PARAMETER_NAME_VALIDATION = "serviceParameterNameValidation";
-        
+
         public const string REDIRECT_AFTER_VALIDATION = "redirectAfterValidation";
         public const string ENCODE_SERVICE_URL = "encodeServiceUrl";
         public const string SECURE_URI_REGEX_STRING = "secureUriRegex";
@@ -79,19 +80,55 @@ namespace DotNetCasClient.Configuration
 
         // Names for the supported Cache Ticket state provider
         public const string CACHE_PROXY_TICKET_MANAGER = "CacheProxyTicketManager";
+
+        #endregion
+
+        #region Methods
+
+        public object Clone()
+        {
+            var newConfiguration = new CasClientConfiguration
+            {
+                ArtifactParameterName = this.ArtifactParameterName,
+                BypassCasForHandlers = this.BypassCasForHandlers,
+                CasServerLoginUrl = this.CasServerLoginUrl,
+                CasServerUrlPrefix = this.CasServerUrlPrefix,
+                CookiesRequiredUrl = this.CookiesRequiredUrl,
+                EncodeServiceUrl = this.EncodeServiceUrl,
+                Gateway = this.Gateway,
+                GatewayParameterName = this.GatewayParameterName,
+                GatewayStatusCookieName = this.GatewayStatusCookieName,
+                NotAuthorizedUrl = this.NotAuthorizedUrl,
+                ProxyCallbackParameterName = this.ProxyCallbackParameterName,
+                ProxyCallbackUrl = this.ProxyCallbackUrl,
+                ProxyTicketManager = this.ProxyTicketManager,
+                RedirectAfterValidation = this.RedirectAfterValidation,
+                Renew = this.Renew,
+                RequireCasForContentTypes = this.RequireCasForContentTypes,
+                RequireCasForMissingContentTypes = this.RequireCasForMissingContentTypes,
+                ServerName = this.ServerName,
+                Service = this.Service,
+                ServiceParameterName = this.ServiceParameterName,
+                ServiceTicketManager = this.ServiceTicketManager,
+                SingleSignOut = this.SingleSignOut,
+                TicketTimeTolerance = this.TicketTimeTolerance,
+                TicketValidatorName = this.TicketValidatorName
+            };
+
+            return newConfiguration;
+        }
+
         #endregion
 
         #region Properties
+
         /// <summary>
         /// The CasClientConfiguration configuration element defined 
         /// in web.config
         /// </summary>
         public static CasClientConfiguration Config
         {
-            get
-            {
-                return ConfigurationManager.GetSection("casClientConfig") as CasClientConfiguration;
-            }
+            get { return ConfigurationManager.GetSection("casClientConfig") as CasClientConfiguration; }
         }
 
         /// <summary>
@@ -101,10 +138,8 @@ namespace DotNetCasClient.Configuration
         [ConfigurationProperty(CAS_SERVER_LOGIN_URL, IsRequired = true)]
         public string CasServerLoginUrl
         {
-            get
-            {
-                return this[CAS_SERVER_LOGIN_URL] as string;
-            }
+            get { return this[CAS_SERVER_LOGIN_URL] as string; }
+            set { this[CAS_SERVER_LOGIN_URL] = value; }
         }
 
         /// <summary>
@@ -115,10 +150,8 @@ namespace DotNetCasClient.Configuration
         [ConfigurationProperty(CAS_SERVER_URL_PREFIX, IsRequired = true)]
         public string CasServerUrlPrefix
         {
-            get
-            {
-                return this[CAS_SERVER_URL_PREFIX] as string;
-            }
+            get { return this[CAS_SERVER_URL_PREFIX] as string; }
+            set { this[CAS_SERVER_URL_PREFIX] = value; }
         }
 
         /// <summary>
@@ -130,10 +163,8 @@ namespace DotNetCasClient.Configuration
         [ConfigurationProperty(TICKET_VALIDATOR_NAME, IsRequired = true)]
         public string TicketValidatorName
         {
-            get
-            {
-                return this[TICKET_VALIDATOR_NAME] as string;
-            }
+            get { return this[TICKET_VALIDATOR_NAME] as string; }
+            set { this[TICKET_VALIDATOR_NAME] = value; }
         }
 
         /// <summary>
@@ -143,10 +174,8 @@ namespace DotNetCasClient.Configuration
         [ConfigurationProperty(TICKET_TIME_TOLERANCE, DefaultValue = 1000L, IsRequired = false)]
         public long TicketTimeTolerance
         {
-            get
-            {
-                return Convert.ToInt64(this[TICKET_TIME_TOLERANCE]);
-            }
+            get { return Convert.ToInt64(this[TICKET_TIME_TOLERANCE]); }
+            set { this[TICKET_TIME_TOLERANCE] = value; }
         }
 
         /// <summary>
@@ -156,10 +185,8 @@ namespace DotNetCasClient.Configuration
         [ConfigurationProperty(SERVICE, IsRequired = false)]
         public string Service
         {
-            get
-            {
-                return this[SERVICE] as string;
-            }
+            get { return this[SERVICE] as string; }
+            set { this[SERVICE] = value; }
         }
 
         /// <summary>
@@ -170,10 +197,8 @@ namespace DotNetCasClient.Configuration
         [ConfigurationProperty(SERVER_NAME, IsRequired = false)]
         public string ServerName
         {
-            get
-            {
-                return this[SERVER_NAME] as string;
-            }
+            get { return this[SERVER_NAME] as string; }
+            set { this[SERVER_NAME] = value; }
         }
 
         /// <summary>
@@ -183,10 +208,8 @@ namespace DotNetCasClient.Configuration
         [ConfigurationProperty(RENEW, DefaultValue = false, IsRequired = false)]
         public bool Renew
         {
-            get
-            {
-                return Convert.ToBoolean(this[RENEW]);
-            }
+            get { return Convert.ToBoolean(this[RENEW]); }
+            set { this[RENEW] = value; }
         }
 
         /// <summary>
@@ -195,10 +218,8 @@ namespace DotNetCasClient.Configuration
         [ConfigurationProperty(GATEWAY, DefaultValue = false, IsRequired = false)]
         public bool Gateway
         {
-            get
-            {
-                return Convert.ToBoolean(this[GATEWAY]);
-            }
+            get { return Convert.ToBoolean(this[GATEWAY]); }
+            set { this[GATEWAY] = value; }
         }
 
         /// <summary>
@@ -209,10 +230,8 @@ namespace DotNetCasClient.Configuration
         [ConfigurationProperty(GATEWAY_STATUS_COOKIE_NAME, IsRequired = false, DefaultValue = "cas_gateway_status")]
         public string GatewayStatusCookieName
         {
-            get
-            {
-                return this[GATEWAY_STATUS_COOKIE_NAME] as string;
-            }
+            get { return this[GATEWAY_STATUS_COOKIE_NAME] as string; }
+            set { this[GATEWAY_STATUS_COOKIE_NAME] = value; }
         }
 
         /// <summary>
@@ -221,10 +240,8 @@ namespace DotNetCasClient.Configuration
         [ConfigurationProperty(ARTIFACT_PARAMETER_NAME, IsRequired = false, DefaultValue = "ticket")]
         public string ArtifactParameterName
         {
-            get
-            {
-                return this[ARTIFACT_PARAMETER_NAME] as string ?? "ticket";
-            }
+            get { return this[ARTIFACT_PARAMETER_NAME] as string ?? "ticket"; }
+            set { this[ARTIFACT_PARAMETER_NAME] = value; }
         }
 
         /// <summary>
@@ -233,32 +250,32 @@ namespace DotNetCasClient.Configuration
         [ConfigurationProperty(SERVICE_PARAMETER_NAME, IsRequired = false, DefaultValue = "service")]
         public string ServiceParameterName
         {
-            get
-            {
-                return this[SERVICE_PARAMETER_NAME] as string ?? "service";
-            }
+            get { return this[SERVICE_PARAMETER_NAME] as string ?? "service"; }
+            set { this[SERVICE_PARAMETER_NAME] = value; }
         }
 
         /// <summary>
         /// Specifies whether to require CAS for requests that have null/empty content-types
         /// </summary>
-        [ConfigurationProperty(REQUIRE_CAS_FOR_MISSING_CONTENT_TYPES_PARAMETER_NAME, IsRequired = false, DefaultValue = true)]
+        [ConfigurationProperty(REQUIRE_CAS_FOR_MISSING_CONTENT_TYPES_PARAMETER_NAME, IsRequired = false,
+            DefaultValue = true)]
         public bool RequireCasForMissingContentTypes
         {
-            get
-            {
-                return Convert.ToBoolean(this[REQUIRE_CAS_FOR_MISSING_CONTENT_TYPES_PARAMETER_NAME]);
-            }
+            get { return Convert.ToBoolean(this[REQUIRE_CAS_FOR_MISSING_CONTENT_TYPES_PARAMETER_NAME]); }
+            set { this[REQUIRE_CAS_FOR_MISSING_CONTENT_TYPES_PARAMETER_NAME] = value; }
         }
 
         /// <summary>
         /// Content-types for which CAS authentication will be required
         /// </summary>
-        [ConfigurationProperty(REQUIRE_CAS_FOR_CONTENT_TYPES_PARAMETER_NAME, IsRequired = false, DefaultValue = new[] { "text/plain", "text/html" })]
-        public string[] RequireCasForContentTypes { 
+        [ConfigurationProperty(REQUIRE_CAS_FOR_CONTENT_TYPES_PARAMETER_NAME, IsRequired = false,
+            DefaultValue = new[] {"text/plain", "text/html"})]
+        public string[] RequireCasForContentTypes
+        {
             get
             {
-                string[] types = ((this[REQUIRE_CAS_FOR_CONTENT_TYPES_PARAMETER_NAME] as string) ?? "text/plain,text/html").Split(',');
+                string[] types =
+                    ((this[REQUIRE_CAS_FOR_CONTENT_TYPES_PARAMETER_NAME] as string) ?? "text/plain,text/html").Split(',');
                 for (int i = 0; i < types.Length; i++)
                 {
                     string type = types[i];
@@ -269,17 +286,20 @@ namespace DotNetCasClient.Configuration
                 }
                 return types;
             }
+            set { this[REQUIRE_CAS_FOR_CONTENT_TYPES_PARAMETER_NAME] = string.Join(",", value); }
         }
 
         /// <summary>
         /// Handlers for which CAS authentication will be bypassed.
         /// </summary>
-        [ConfigurationProperty(BYPASS_CAS_FOR_HANDLERS_PARAMETER_NAME, IsRequired = false, DefaultValue = new[] { "trace.axd", "webresource.axd" })]
+        [ConfigurationProperty(BYPASS_CAS_FOR_HANDLERS_PARAMETER_NAME, IsRequired = false,
+            DefaultValue = new[] {"trace.axd", "webresource.axd"})]
         public string[] BypassCasForHandlers
         {
             get
             {
-                string[] types = ((this[REQUIRE_CAS_FOR_CONTENT_TYPES_PARAMETER_NAME] as string) ?? "trace.axd,webresource.axd").Split(',');
+                string[] types =
+                    ((this[BYPASS_CAS_FOR_HANDLERS_PARAMETER_NAME] as string) ?? "trace.axd,webresource.axd").Split(',');
                 for (int i = 0; i < types.Length; i++)
                 {
                     string type = types[i];
@@ -290,6 +310,7 @@ namespace DotNetCasClient.Configuration
                 }
                 return types;
             }
+            set { this[BYPASS_CAS_FOR_HANDLERS_PARAMETER_NAME] = string.Join(",", value); }
         }
 
         // public const string REQUIRE_CAS_FOR_CONTENT_TYPES_PARAMETER_NAME = "requireCasForContentTypes";
@@ -302,10 +323,8 @@ namespace DotNetCasClient.Configuration
         [ConfigurationProperty(REDIRECT_AFTER_VALIDATION, DefaultValue = false, IsRequired = false)]
         public bool RedirectAfterValidation
         {
-            get
-            {
-                return Convert.ToBoolean(this[REDIRECT_AFTER_VALIDATION]);
-            }
+            get { return Convert.ToBoolean(this[REDIRECT_AFTER_VALIDATION]); }
+            set { this[REDIRECT_AFTER_VALIDATION] = value; }
         }
 
         /// <summary>
@@ -314,10 +333,8 @@ namespace DotNetCasClient.Configuration
         [ConfigurationProperty(ENCODE_SERVICE_URL, DefaultValue = false, IsRequired = false)]
         public bool EncodeServiceUrl
         {
-            get
-            {
-                return Convert.ToBoolean(this[ENCODE_SERVICE_URL]);
-            }
+            get { return Convert.ToBoolean(this[ENCODE_SERVICE_URL]); }
+            set { this[ENCODE_SERVICE_URL] = value; }
         }
 
         /// <summary>
@@ -326,10 +343,8 @@ namespace DotNetCasClient.Configuration
         [ConfigurationProperty(SINGLE_SIGN_OUT, DefaultValue = true, IsRequired = false)]
         public bool SingleSignOut
         {
-            get
-            {
-                return Convert.ToBoolean(this[SINGLE_SIGN_OUT]);
-            }
+            get { return Convert.ToBoolean(this[SINGLE_SIGN_OUT]); }
+            set { this[SINGLE_SIGN_OUT] = value; }
         }
 
         /// <summary>
@@ -342,10 +357,8 @@ namespace DotNetCasClient.Configuration
         [ConfigurationProperty(SERVICE_TICKET_MANAGER, IsRequired = false)]
         public string ServiceTicketManager
         {
-            get
-            {
-                return this[SERVICE_TICKET_MANAGER] as string;
-            }
+            get { return this[SERVICE_TICKET_MANAGER] as string; }
+            set { this[SERVICE_TICKET_MANAGER] = value; }
         }
 
         /// <summary>
@@ -358,10 +371,8 @@ namespace DotNetCasClient.Configuration
         [ConfigurationProperty(PROXY_TICKET_MANAGER, IsRequired = false)]
         public string ProxyTicketManager
         {
-            get
-            {
-                return this[PROXY_TICKET_MANAGER] as string;
-            }
+            get { return this[PROXY_TICKET_MANAGER] as string; }
+            set { this[PROXY_TICKET_MANAGER] = value; }
         }
 
         /// <summary>
@@ -374,10 +385,8 @@ namespace DotNetCasClient.Configuration
         [ConfigurationProperty(NOT_AUTHORIZED_URL, IsRequired = false)]
         public string NotAuthorizedUrl
         {
-            get
-            {
-                return this[NOT_AUTHORIZED_URL] as string;
-            }
+            get { return this[NOT_AUTHORIZED_URL] as string; }
+            set { this[NOT_AUTHORIZED_URL] = value; }
         }
 
         /// <summary>
@@ -390,10 +399,8 @@ namespace DotNetCasClient.Configuration
         [ConfigurationProperty(COOKIES_REQUIRED_URL, IsRequired = false, DefaultValue = null)]
         public string CookiesRequiredUrl
         {
-            get
-            {
-                return this[COOKIES_REQUIRED_URL] as string;
-            }
+            get { return this[COOKIES_REQUIRED_URL] as string; }
+            set { this[COOKIES_REQUIRED_URL] = value; }
         }
 
         /// <summary>
@@ -410,10 +417,8 @@ namespace DotNetCasClient.Configuration
         [ConfigurationProperty(GATEWAY_PARAMETER_NAME, IsRequired = false, DefaultValue = "gatewayResponse")]
         public string GatewayParameterName
         {
-            get
-            {
-                return this[GATEWAY_PARAMETER_NAME] as string;
-            }
+            get { return this[GATEWAY_PARAMETER_NAME] as string; }
+            set { this[GATEWAY_PARAMETER_NAME] = value; }
         }
 
         /// <summary>
@@ -425,10 +430,9 @@ namespace DotNetCasClient.Configuration
         [ConfigurationProperty(PROXY_CALLBACK_PARAMETER_NAME, IsRequired = false, DefaultValue = "proxyResponse")]
         public string ProxyCallbackParameterName
         {
-            get
-            {
-                return this[PROXY_CALLBACK_PARAMETER_NAME] as string;
-            }
+            get { return this[PROXY_CALLBACK_PARAMETER_NAME] as string; }
+            set { this[PROXY_CALLBACK_PARAMETER_NAME] = value; }
+
         }
 
         /// <summary>
@@ -437,11 +441,10 @@ namespace DotNetCasClient.Configuration
         [ConfigurationProperty(PROXY_CALLBACK_URL, IsRequired = false)]
         public string ProxyCallbackUrl
         {
-            get
-            {
-                return this[PROXY_CALLBACK_URL] as string;
-            }
+            get { return this[PROXY_CALLBACK_URL] as string; }
+            set { this[PROXY_CALLBACK_URL] = value; }
         }
+
         #endregion
     }
 }

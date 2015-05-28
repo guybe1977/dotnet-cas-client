@@ -136,7 +136,7 @@ namespace DotNetCasClient
         /// <summary>
         /// Initializes configuration-related properties and validates configuration.
         /// </summary>        
-        public static void Initialize()
+        public static void Initialize(CasClientConfiguration config = null)
         {
             if (!initialized)
             {
@@ -181,69 +181,69 @@ namespace DotNetCasClient
                         formsLoginUrl = AuthenticationConfig.Forms.LoginUrl;
                         formsTimeout = AuthenticationConfig.Forms.Timeout;
 
-                        if (string.IsNullOrEmpty(CasClientConfig.CasServerUrlPrefix))
+                        if (string.IsNullOrEmpty(config != null ? config.CasServerUrlPrefix : CasClientConfig.CasServerUrlPrefix))
                         {
                             LogAndThrowConfigurationException("The CasServerUrlPrefix is required");
                         }
 
-                        casServerUrlPrefix = CasClientConfig.CasServerUrlPrefix;
+                        casServerUrlPrefix = config != null ? config.CasServerUrlPrefix : CasClientConfig.CasServerUrlPrefix;
                         configLogger.Info("casServerUrlPrefix = " + casServerUrlPrefix);
-                        
-                        casServerLoginUrl = CasClientConfig.CasServerLoginUrl;
+
+                        casServerLoginUrl = config != null ? config.CasServerLoginUrl : CasClientConfig.CasServerLoginUrl;
                         configLogger.Info("casServerLoginUrl = " + casServerLoginUrl);
-                        
-                        ticketValidatorName = CasClientConfig.TicketValidatorName;
+
+                        ticketValidatorName = config != null ? config.TicketValidatorName : CasClientConfig.TicketValidatorName;
                         configLogger.Info("ticketValidatorName = " + ticketValidatorName);
-                        
-                        ticketTimeTolerance = CasClientConfig.TicketTimeTolerance;
+
+                        ticketTimeTolerance = config != null ? config.TicketTimeTolerance : CasClientConfig.TicketTimeTolerance;
                         configLogger.Info("ticketTimeTolerance = " + ticketTimeTolerance);
-                        
-                        serverName = CasClientConfig.ServerName;
+
+                        serverName = config != null ? config.ServerName : CasClientConfig.ServerName;
                         configLogger.Info("serverName = " + serverName);
-                        
-                        renew = CasClientConfig.Renew;
+
+                        renew = config != null ? config.Renew : CasClientConfig.Renew;
                         configLogger.Info("renew = " + renew);
-                        
-                        gateway = CasClientConfig.Gateway;
+
+                        gateway = config != null ? config.Gateway : CasClientConfig.Gateway;
                         configLogger.Info("gateway = " + gateway);
-                        
-                        gatewayStatusCookieName = CasClientConfig.GatewayStatusCookieName;
+
+                        gatewayStatusCookieName = config != null ? config.GatewayStatusCookieName : CasClientConfig.GatewayStatusCookieName;
                         configLogger.Info("gatewayStatusCookieName = " + gatewayStatusCookieName);
-                        
-                        redirectAfterValidation = CasClientConfig.RedirectAfterValidation;
+
+                        redirectAfterValidation = config != null ? config.RedirectAfterValidation : CasClientConfig.RedirectAfterValidation;
                         configLogger.Info("redirectAfterValidation = " + redirectAfterValidation);
-                        
-                        singleSignOut = CasClientConfig.SingleSignOut;
+
+                        singleSignOut = config != null ? config.SingleSignOut : CasClientConfig.SingleSignOut;
                         configLogger.Info("singleSignOut = " + singleSignOut);
-                        
-                        serviceTicketManagerProvider = CasClientConfig.ServiceTicketManager;
+
+                        serviceTicketManagerProvider = config != null ? config.ServiceTicketManager : CasClientConfig.ServiceTicketManager;
                         configLogger.Info("serviceTicketManagerProvider = " + serviceTicketManagerProvider);
-                        
-                        proxyTicketManagerProvider = CasClientConfig.ProxyTicketManager;
+
+                        proxyTicketManagerProvider = config != null ? config.ProxyTicketManager : CasClientConfig.ProxyTicketManager;
                         configLogger.Info("proxyTicketManagerProvider = " + proxyTicketManagerProvider);
-                        
-                        notAuthorizedUrl = CasClientConfig.NotAuthorizedUrl;
+
+                        notAuthorizedUrl = config != null ? config.NotAuthorizedUrl : CasClientConfig.NotAuthorizedUrl;
                         configLogger.Info("notAuthorizedUrl = " + notAuthorizedUrl);
-                        
-                        cookiesRequiredUrl = CasClientConfig.CookiesRequiredUrl;
+
+                        cookiesRequiredUrl = config != null ? config.CookiesRequiredUrl : CasClientConfig.CookiesRequiredUrl;
                         configLogger.Info("cookiesRequiredUrl = " + cookiesRequiredUrl);
-                        
-                        gatewayParameterName = CasClientConfig.GatewayParameterName;
+
+                        gatewayParameterName = config != null ? config.GatewayParameterName : CasClientConfig.GatewayParameterName;
                         configLogger.Info("gatewayParameterName = " + gatewayParameterName);
-                        
-                        proxyCallbackParameterName = CasClientConfig.ProxyCallbackParameterName;
+
+                        proxyCallbackParameterName = config != null ? config.ProxyCallbackParameterName : CasClientConfig.ProxyCallbackParameterName;
                         configLogger.Info("proxyCallbackParameterName = " + proxyCallbackParameterName);
 
-                        casProxyCallbackUrl = CasClientConfig.ProxyCallbackUrl;
+                        casProxyCallbackUrl = config != null ? config.ProxyCallbackUrl : CasClientConfig.ProxyCallbackUrl;
                         configLogger.Info("proxyCallbackUrl = " + casProxyCallbackUrl);
 
-                        requireCasForMissingContentTypes = CasClientConfig.RequireCasForMissingContentTypes;
+                        requireCasForMissingContentTypes = config != null ? config.RequireCasForMissingContentTypes : CasClientConfig.RequireCasForMissingContentTypes;
                         configLogger.Info("requireCasForMissingContentTypes = " + requireCasForMissingContentTypes);
 
-                        requireCasForContentTypes = CasClientConfig.RequireCasForContentTypes;
+                        requireCasForContentTypes = config != null ? config.RequireCasForContentTypes : CasClientConfig.RequireCasForContentTypes;
                         configLogger.Info("requireCasForContentTypes = " + requireCasForContentTypes);
 
-                        bypassCasForHandlers = CasClientConfig.BypassCasForHandlers;
+                        bypassCasForHandlers = config != null ? config.BypassCasForHandlers : CasClientConfig.BypassCasForHandlers;
                         configLogger.Info("bypassCasForHandlers = " + bypassCasForHandlers);
 
                         if (String.Compare(ticketValidatorName, CasClientConfiguration.CAS10_TICKET_VALIDATOR_NAME, true) == 0)
@@ -323,7 +323,6 @@ namespace DotNetCasClient
 
                 if (ServiceTicketManager != null) ServiceTicketManager.Initialize();
                 if (ProxyTicketManager != null) ProxyTicketManager.Initialize();
-                if (TicketValidator != null) TicketValidator.Initialize();
             }
         }
 

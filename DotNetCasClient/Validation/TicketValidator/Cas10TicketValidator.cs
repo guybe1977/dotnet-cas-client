@@ -52,7 +52,7 @@ namespace DotNetCasClient.Validation.TicketValidator
         /// <summary>
         /// Performs Cas10TicketValidator initialization.
         /// </summary>
-        public override void Initialize() { /* Do nothing */ }
+        protected override void InitializeInternal(){ /* Do nothing */ }
 
         /// <summary>
         /// Parses the response from the server into a CAS Assertion and includes this in

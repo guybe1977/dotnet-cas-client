@@ -79,7 +79,7 @@ namespace DotNetCasClient.Validation.TicketValidator
         /// <summary>
         /// Performs Saml11TicketValidator initialization.
         /// </summary>
-        public override void Initialize()
+        protected override void InitializeInternal()
         {
             // Do nothing
         }

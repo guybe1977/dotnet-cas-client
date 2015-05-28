@@ -63,7 +63,7 @@ namespace DotNetCasClient.Validation.TicketValidator
         /// <summary>
         /// Performs Cas20ServiceTicketValidator initialization.
         /// </summary>
-        public override void Initialize()
+        protected override void InitializeInternal()
         {
             if (CasAuthentication.ProxyTicketManager != null)
             {
