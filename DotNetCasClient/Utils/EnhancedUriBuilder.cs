@@ -277,8 +277,17 @@ namespace DotNetCasClient.Utils
                 {
                     if (item.Length > 0)
                     {
-                        string[] namevalue = item.Split('=');
-                        _QueryItems.Add(namevalue[0], namevalue.Length > 1 ? namevalue[1] : String.Empty);
+                        int indexOfEquals = item.IndexOf("=", StringComparison.InvariantCultureIgnoreCase);
+                        string name = item;
+                        string value = String.Empty;
+                        
+                        if (indexOfEquals >= 0)
+                        {
+                            name = item.Substring(0, indexOfEquals);
+                            value = item.Substring(indexOfEquals + 1);
+                        }
+
+                        _QueryItems.Add(name, value);
                     }
                 }
             }
